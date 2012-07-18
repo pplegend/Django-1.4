@@ -1,0 +1,9 @@
+{% extends "catalog.html" %}
+
+{% block content %}
+{% for p in products %}
+      {% include 'tags/product_thumbnail.html' %}
+       
+     
+    {% endfor %}
+{% endblock %}

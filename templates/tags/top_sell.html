@@ -1,0 +1,14 @@
+{% with topsells as products %}
+<div id="myclass">
+<ul>
+
+   {% for p in products %}
+   <li>
+          <a href="{{ p.get_absolute_url }}" class="category">{{ p.name }}</a>   
+         
+   </li>          
+   {% endfor %}
+ 
+</ul>
+</div>
+{% endwith %}  

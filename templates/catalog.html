@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load catalog_tags %}
+{% load search_tags %}
+{% block site_wrapper %}
+
+<div id="main">
+	<div id="banner">
+		<div id="navbar">
+			<div class="inbar">
+				{% include 'tags/navigation.html' %}
+				<div class="searchwrapper">{% search_box request %}</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="category">
+		<div class="category_list">
+			<h4>Categories</h4>
+			{% category_list request.path %}
+		</div>	
+	</div>
+	<div id="page">
+		<div id="header">
+			<span>Welcome to the iStore</span>
+			<div class="exitenty">
+				<ul>
+					<li>
+						{% if user.is_authenticated %}
+						<a href="{% url logout_view %}">Logout</a>
+						{% cart_box request %}
+						{% else %}
+						<a href="{% url register %}">Sign Up</a>										
+						<a href="{% url django.contrib.auth.views.login %}">Login</a>
+						{% cart_box request %}
+						{% endif %}
+					</li>
+				</ul>
+			</div>
+			 	
+		</div>
+		<div id="content">
+			<div class="show_content">
+				{% block content %} {% endblock %}
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div id="rightside">
+		<div id="top_seller">
+		  <h4>Top Sells</h4>
+		  {% top_sell_list request.path %}
+		 </div>
+				{% include 'tags/right_side.html' %}
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div>
+	<div id="footer">
+		Copyright &copy; 2011 M&F Studio. All rights reserved.
+	</div>	
+</div>
+{% endblock %}

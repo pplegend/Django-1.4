@@ -1,0 +1,232 @@
+{% extends "catalog.html" %}
+{% block content %}
+<div id="contentpic">
+	<h1>{{ p.name }}</h1>
+    <div class="product_image" >
+     <img src="{{ MEDIA_URL }}{{ p.image }}" alt="{{ p.name }}" />
+    </div>
+</div>
+<div id="contentfig">
+    Brand: <em>{{ p.brand }}</em>
+    <br />
+   <b>{{ p.sku }}</b> available
+   <br />
+  In categor{{ categories.count|pluralize:"y,ies" }}:
+    {% for c in categories %}
+<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    <br />
+{% if p.sale_price %}
+    Was: <del>€ {{ p.old_price }}</del>
+    <br />
+    Now: € {{ p.price }}
+{% else %}
+    Price: € {{ p.price }}
+{% endif %}
+{{average}}
+<form method="post" action="." class="cart">
+   {{ form.as_p }}
+  <br />
+  <button type="submit" class="add" name="submit"></button>
+  <button type="submit" class="check" name="check"></button>
+  {% csrf_token %}
+</form>
+</div>
+
+<script type="text/javascript">
+
+
+function loadXMLDoc(rate)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var temp=xmlhttp.responseText.split(',');
+			document.getElementById("t_votes").innerHTML=temp[0];
+			//document.getElementById("myDiv").innerHTML=temp[1];
+			document.getElementById("t_ava").innerHTML=temp[1];
+			$('.rate_widget #'+temp[1]).prevAll().andSelf().addClass('ratings_over'); 
+		}
+	  }
+	xmlhttp.open("GET","rating?productid="+{{ p.id }}+"&rate="+rate,true);
+	xmlhttp.send();
+	
+	$('.movie_choice #'+rate).prevAll().andSelf().addClass('ratings_over');
+	$('.movie_choice .ratings_stars').unbind("mouseover").unbind("mouseout");
+
+	$("#myDiv").val(rate);
+}
+
+function addComment(){
+	var sco=$("#myDiv").val();
+	comment = { comments: $("#id_comment").val(),
+				productid: $("#product_id").val(),
+				score: sco,//change here later
+				name:$("#name").val(),
+				time:$("#time").val()
+			};
+	$.post("/comment/product/add/", comment,
+			function(response){
+				if (response.status == "successful"){
+				
+					$("#add_comment").attr('disabled','disabled');
+					$("#comments").prepend(response.comment);
+					$("#id_comment").val("");
+					$("#name").val("");
+					//$("#comments").append(response);
+				}
+		}, "json");
+}
+$(document).ready(function() {
+	$("#add_comment").click(addComment);
+	var average = $("#average").val();
+	$('.rate_widget #'+average).prevAll().andSelf().addClass('ratings_over'); 
+
+	$(".movie_choice .ratings_stars").hover(mouseIn,mouseOut);
+	// Handles the mouseover 
+	function mouseIn() {
+
+	$(this).prevAll().andSelf().addClass('ratings_over'); 
+	$(this).nextAll().removeClass('ratings_vote'); 
+	//var pid = $("#pid").val();
+	//$("#show").html("rate="+this.id+" ,p_id="+pid);
+	}
+	// Handles the mouseout 
+	function mouseOut() {
+	$(this).prevAll().andSelf().removeClass('ratings_over');
+	$('.rate_widget #'+average).prevAll().andSelf().addClass('ratings_over');  
+	set_votes($(this).parent());
+	}
+
+	$(function() {
+	// setup ul.tabs to work as tabs for each div directly under div.panes
+		$("ul.tabs").tabs("div.panes > div");
+	})
+});
+</script>
+<script type="text/javascript"> 
+    hs.graphicsDir = '/static/highslide/graphics/';
+    hs.outlineType = 'rounded-white';
+	
+	function reply(name) {
+		$("#id_comment").val("To "+name+": ");	
+	}
+</script>
+<script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+
+<ul class="tabs">
+	<li><a href="#">Description</a></li>
+	<li><a href="#">Comments ({{ comment_count }})</a></li>
+</ul>
+
+<div class="panes">
+	<div id="contentdes">
+	{{description_short}}
+	<a href="#" onclick="return hs.htmlExpand(this, { contentId: 'highslide-html' } )"
+		class="highslide">
+	 Read More...
+	</a>
+
+	
+	</div>
+
+	<div id="comments">
+		<table id="comment">
+			{% for comment in co %}
+				<tr>
+					<td id="profile">
+						<img src="/static/images/user.gif" alt={{comment.name}} title={{comment.name}} class="avatar"/><br />
+						{{comment.name}}
+						<input type="hidden" id="scorevalue" value={{comment.score}} />				
+					</td>
+					<td>
+					<span> 
+						<span id="star1" class="ratings_stars{% if comment.score >= 1 %} ratings_over{% endif %}"></span>
+						<span id="star2" class="ratings_stars{% if comment.score >= 2 %} ratings_over{% endif %}"></span>
+						<span id="star3" class="ratings_stars{% if comment.score >= 3 %} ratings_over{% endif %}"></span>
+						<span id="star4" class="ratings_stars{% if comment.score >= 4 %} ratings_over{% endif %}"></span>
+						<span id="star5" class="ratings_stars{% if comment.score = 5 %} ratings_over{% endif %}"></span>
+					</span> 
+					<br /><br />
+					{{ comment.comment}}
+					</td>
+				</tr>
+				<tr><td id="reply_r" colspan="2"><a href="javascript: reply('{{comment.name}}')" style="float:right">reply</a></td></tr>
+			{% endfor %}
+		</table>
+		<span style="float:left;padding:0 10px 0 5px;">Rate for {{ p.name }}</span>
+		<span class='movie_choice'> 
+			<span id="1" class="star_1 ratings_stars" onclick="loadXMLDoc('1')"></span>
+			<span id="2" class="star_2 ratings_stars" onclick="loadXMLDoc('2')"></span>
+			<span id="3" class="star_3 ratings_stars" onclick="loadXMLDoc('3')"></span>
+			<span id="4" class="star_4 ratings_stars" onclick="loadXMLDoc('4')"></span>
+			<span id="5" class="star_5 ratings_stars" onclick="loadXMLDoc('5')"></span>
+		
+		</span> 
+		
+			<input type="hidden" id="pid" value={{ p.id }} />
+			<input type="hidden" id="average" value={{ average }} />
+			
+		<input type="hidden" id="myDiv" value="" />
+		
+		<table>
+		<!--
+			<th colspan="2">
+				<label for="id_comment">Comment this product: </label>
+			</th>
+	-->		
+			<tr>
+				<td>
+					<input type="hidden" id="product_id" value="{{ p.id }}" />
+					<input type="hidden" id="time" value="{{ now }}" />
+					Comments:
+				</td>
+				<td>
+					<textarea name="comment" id="id_comment" rows="8" cols="60" ></textarea>
+					<!--<input id="id_comment" type="textarea" /><br/>-->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Name:
+				</td>
+				<td>
+					<input id="name" type="text" /><br/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Comment" id="add_comment" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="highslide-html-content" id="highslide-html">
+	<div class="highslide-header">
+		<ul>
+			<li class="highslide-move">
+				<a href="#" onclick="return false">Move</a>
+			</li>
+			<li class="highslide-close">
+				<a href="#" onclick="return hs.close(this)">Close</a>
+			</li>
+		</ul>
+	</div>
+	<div class="highslide-body">
+	{{description}}
+	</div>
+</div>
+{% endblock %}

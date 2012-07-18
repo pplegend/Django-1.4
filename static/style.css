@@ -1,0 +1,9 @@
+ul.errorlist{background-color:red; color:white;}
+table#shopping_cart{width:100%; border-collapse:collapse; color:#616161;}
+h1,caption{text-align:left;font-size:x-large;margin-botton:15px;color:black;}
+th,td{text-align:left;padding:3px;}
+thead th{color:white; background-color:#616161;}
+tfoot th{height:40px;}
+table#shopping_cart th.right, td.right{text-align:right;}
+a.cart{color:orange;}
+

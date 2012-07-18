@@ -1,0 +1,9 @@
+{% load catalog_tags %}
+
+{% with cart_item_count as cart_count %}
+
+   <a href="{% url show_cart %}">
+   <img src="/static/images/topbar/cart.png" alt="Cart">
+   (<b style="color:#FF0000">{{ cart_count }}</b>) Item {{ cart_count|pluralize }}	
+   </a>
+{% endwith %}

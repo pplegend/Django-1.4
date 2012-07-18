@@ -1,0 +1,46 @@
+{% extends "catalog.html" %}
+{% block content %}
+<table>
+	<caption> Your Shopping Cart</caption>
+	<thead>
+	<tr>
+		<th>Product</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Total</th>
+	</tr>
+	
+		{% for item in cart_items%}
+		<tr>	
+			<td>{{ item.name}}</td>
+			<td>{{ item.price}}</td>
+			<td>{{ item.quantity }}</td>
+			
+			<td>{{ item.quantity}} *{{item.price }}</td>
+		</tr>	
+		{% endfor %}
+	
+</table>
+
+<form action="http://webcourse.cs.hut.fi/payment/pay/" method="POST">
+    <input type="hidden" name="pid" value="{{  payment_id }}" />
+    <input type="hidden" name="sid" value="zhangyongzhen" />
+    <input type="hidden" name="success_url" 
+            value="http://localhost:8000/payment/success?pid={{  payment_id }}&ref=34&checksum={{confirm_checksum}}" />
+    <input type="hidden" name="cancel_url" 
+            value="http://localhost:8000/payment/cancel" />
+    <input type="hidden" name="error_url" 
+            value="http://localhost:8000/payment/error" />
+    <input type="hidden" name="checksum" 
+            value="{{ checksum }}" />
+
+    <label for="id_amount">Amount</label> 
+    <input type="text" id="id_amount" name="amount" value="{{amount }}" />
+    <input type="submit" value="Accept Payment"/>
+</form>
+
+{% endblock %}		
+<!--Selled ID: zhangyongzhen
+
+Secret Key: a6ef8c8abf2a4cc6c3bf8fbee71a0504
+->

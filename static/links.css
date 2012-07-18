@@ -1,0 +1,119 @@
+#navbar{
+	width:auto;
+	height:36px;
+	background:url(images/topbar/navbar-bg.png) left top repeat-x; 
+}
+
+#navbar .inbar{
+	display:block;
+	height:36px;
+	background:url(images/topbar/right-round.png) right top no-repeat;
+}
+
+#navbar .searchwrapper {
+	width:237px; /*follow your image's size*/
+	height:33px;/*follow your image's size*/
+	background-image:url(images/topbar/search.png);
+	background-repeat:no-repeat; /*important*/
+	padding:0 0 0 10px;
+	margin:0 0 0 0px;
+	top:2px;
+	float:right;
+	position:relative; /*important*/
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+}
+#navbar .searchwrapper:hover{
+	opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+/*#navbar .searchwrapper input:focus {
+	background-color: #FFFFFF;
+	color:#333333;
+	-webkit-border-radius: .4em; 
+	-moz-border-radius: .4em; 
+	border-radius: .4em;
+}*/
+
+#navbar .searchwrapper  form { 
+	display:inline ;
+}
+
+.searchbox {
+	color:#FFFFFF;
+	border:0px; /*important*/
+	background-color:transparent; /*important*/
+	position:absolute; /*important*/
+	top:7px;
+	left:10px;
+	width:190px;
+	height:19px;
+}
+.searchbox_submit {
+	border:0px; /*important*/
+	background-color:transparent; /*important*/
+	position:absolute; /*important*/
+	top:4px;
+	left:210px;
+	width:25px;
+	height:25px;
+	outline:none;
+}
+#navbar ul, #navbar ul li{
+	border:0px;
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	height:36px;
+	line-height:36px; 
+} 
+
+#navbar ul{
+	background:url(images/topbar/left-round.png) left top no-repeat; 
+}
+
+#navbar ul li{
+	float:left;
+	display:block;
+	line-height:36px; 
+}
+
+#navbar ul li a{
+	color:#403e32;
+	text-decoration:none;
+	font-weight:bold;
+	display:block; 
+}
+
+#navbar ul li a span{
+	padding:0 20px 0 0;
+	height:36px;
+	line-height:36px;
+	display:block;
+	margin-left:20px; 
+}
+
+#navbar .navhome a, #navbar .navhome a:hover{
+	background:url(images/topbar/a-bg.png) left top no-repeat;
+	height:36px;
+	line-height:36px; 
+}
+#navbar .navhome a span, #navbar .navhome a:hover span{
+	color:#FFFFFF;
+	background:url(images/topbar/span-bg.png) right top no-repeat;
+	height:36px;
+	line-height:36px; 
+}
+
+#navbar ul li a:hover{
+	background:url(images/topbar/ahover-bg.png) left top no-repeat;
+	height:36px;
+	line-height:36px; 
+}
+
+#navbar ul li a:hover span{
+	background:url(images/topbar/spanhover-bg.png) right top no-repeat;
+	height:36px;
+	line-height:36px; 
+} 
